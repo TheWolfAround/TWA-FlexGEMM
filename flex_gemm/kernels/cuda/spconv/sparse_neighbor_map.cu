@@ -111,7 +111,7 @@ torch::Tensor hashmap_build_sparse_conv_out_coords(
             Pw, Ph, Pd,
             Dw, Dh, Dd,
             in_coords.data_ptr<int32_t>(),
-            hashmap_keys.data_ptr<T>(),
+            reinterpret_cast<T*>(hashmap_keys.data_ptr()),
             serialize_func
         );
 
@@ -125,7 +125,7 @@ torch::Tensor hashmap_build_sparse_conv_out_coords(
         >>>(
             valid_key.size(0),
             Wo, Ho, Do,
-            valid_key.data_ptr<T>(),
+            reinterpret_cast<T*>(valid_key.data_ptr()),
             out_coords.data_ptr<int32_t>(),
             serialize_func
         );
@@ -324,7 +324,7 @@ torch::Tensor expand_unique_build_sparse_conv_out_coords(
             Dw, Dh, Dd,
             in_coords.data_ptr<int32_t>(),
             expanded_start.data_ptr<int64_t>(),
-            expanded_keys.data_ptr<T>(),
+            reinterpret_cast<T*>(expanded_keys.data_ptr()),
             serialize_func
         );
 
@@ -338,8 +338,8 @@ torch::Tensor expand_unique_build_sparse_conv_out_coords(
         >>>(
             valid_keys.size(0),
             Wo, Ho, Do,
-            valid_keys.data_ptr<T>(),
-            out_coords.data_ptr<int32_t>(),
+            reinterpret_cast<T*>(valid_keys.data_ptr()),
+            reinterpret_cast<int32_t*>(out_coords.data_ptr()),
             serialize_func
         );
         return out_coords;
